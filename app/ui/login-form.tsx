@@ -1,15 +1,35 @@
-import { lusitana } from '@/app/ui/fonts';
+"use client";
+import { lusitana } from "@/app/ui/fonts";
+import { signIn } from "next-auth/react";
 import {
   AtSymbolIcon,
   KeyIcon,
   ExclamationCircleIcon,
-} from '@heroicons/react/24/outline';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { Button } from './button';
+} from "@heroicons/react/24/outline";
+import { ArrowRightIcon } from "@heroicons/react/20/solid";
+import { Button } from "./button";
+import { toast } from "react-toastify";
 
 export default function LoginForm() {
   return (
-    <form className="space-y-3">
+    <form
+      className="space-y-3"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const response = await signIn("credentials", {
+          email: "ers@gmail.com",
+          password: "jddj",
+          redirect: false,
+        });
+        if (response?.ok) {
+          toast.success("Login successfull", { toastId: "success" });
+        }
+
+        if (response?.error) {
+          toast.error(response.error, { toastId: "Error" });
+        }
+      }}
+    >
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
           Please log in to continue.
