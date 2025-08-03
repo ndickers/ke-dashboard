@@ -1,9 +1,10 @@
-import NextAuth, { SessionStrategy } from "next-auth"
+import NextAuth, { Session, SessionStrategy, User } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
+import { JWT } from "next-auth/jwt";
 
 
-export const authOptions = {
+const authOptions = {
     pages: {
         signIn: "/login",
     },
@@ -34,16 +35,16 @@ export const authOptions = {
         })]
     ,
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user }: { token: JWT, user: User }): Promise<JWT> {
             if (user) {
-                token.accessToken = user.token
+                token.accessToken = (user as any).token;
                 token.id = user.id
                 token.email = user.email
                 token.name = user.name
             }
             return token
         },
-        async session({ token, session }) {
+        async session({ token, session }: { token: JWT, session: any }) {
             if (token) {
                 session.user.id = token.id;
                 session.user.email = token.email;

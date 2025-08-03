@@ -12,8 +12,6 @@ import {
   LatestInvoicesSkeleton,
   RevenueChartSkeleton,
 } from "@/app/ui/skeletons";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function Page() {
   const latestInvoices = await fetchLatestInvoices();
@@ -24,9 +22,6 @@ export default async function Page() {
     totalPendingInvoices,
   } = await fetchCardData();
   const revenue = await fetchRevenue();
-  const session = await getServerSession(authOptions);
-
-  console.log({ sessDash: session });
 
   return (
     <main>
