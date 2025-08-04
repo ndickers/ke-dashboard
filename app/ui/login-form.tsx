@@ -28,7 +28,7 @@ export default function LoginForm() {
             redirect: false,
           });
           if (response?.ok) {
-            router.push("/dashboard");
+            router.replace("/dashboard");
             toast.success("Login successfull", { toastId: "success" });
           }
 
